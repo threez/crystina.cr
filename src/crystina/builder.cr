@@ -48,7 +48,7 @@ module Crystina
 
     # Appends a `require "path"` line.
     def req(path : String) : self
-      @nodes << Line.new(%{require "#{path}"})
+      @nodes << Line.new(%(require "#{path}"))
       self
     end
 

@@ -14,7 +14,7 @@ jobs:
 
       - uses: crystal-lang/install-crystal@v1
         with:
-          crystal: 1.20.1
+          crystal: 1.20.2
 
       - name: Cache shards
         uses: actions/cache@v4
@@ -25,8 +25,14 @@ jobs:
 
       - run: shards install
 
+      - name: Build ameba
+        run: cd lib/ameba && shards build ameba
+
       - name: Format check
         run: crystal tool format --check
+
+      - name: Ameba lint
+        run: lib/ameba/bin/ameba
 
       - name: Compile check
         run: crystal build src/crystina.cr -o /tmp/crystina_check --no-codegen
@@ -40,7 +46,7 @@ jobs:
 
       - uses: crystal-lang/install-crystal@v1
         with:
-          crystal: 1.20.1
+          crystal: 1.20.2
 
       - name: Cache shards
         uses: actions/cache@v4
