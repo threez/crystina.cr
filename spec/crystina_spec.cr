@@ -311,8 +311,8 @@ describe Crystina do
         mod("Foo") do
           def_method("sign", [param("x", "Int32")], "String") do
             cond("x > 0") do |if_bldr|
-              if_bldr.return_val %{"positive"}
-              if_bldr.else_clause { return_val %{"non-positive"} }
+              if_bldr.return_val %("positive")
+              if_bldr.else_clause { return_val %("non-positive") }
             end
           end
         end
@@ -406,25 +406,25 @@ describe Crystina do
     end
 
     it "scope with custom footer" do
-      C.build.scope("query = HTTP::Params.build do |p|", "end") { |bldr|
+      C.build.scope("query = HTTP::Params.build do |p|", "end") do |bldr|
         bldr.line "p.add(\"limit\", limit.to_s)"
-      }.to_s.should eq("query = HTTP::Params.build do |p|\n  p.add(\"limit\", limit.to_s)\nend\n")
+      end.to_s.should eq("query = HTTP::Params.build do |p|\n  p.add(\"limit\", limit.to_s)\nend\n")
     end
 
     it "assign_call renders target = method(\n  args\n)" do
-      C.build.assign_call("result", "foo") { |asgn|
+      C.build.assign_call("result", "foo") do |asgn|
         asgn.line "arg1,"
         asgn.line "arg2,"
-      }.to_s.should eq("result = foo(\n  arg1,\n  arg2,\n)\n")
+      end.to_s.should eq("result = foo(\n  arg1,\n  arg2,\n)\n")
     end
 
     it "assign_call nested inside scope" do
-      C.build.scope("def post") { |bldr|
-        bldr.assign_call("response", "@http.post") { |asgn|
+      C.build.scope("def post") do |bldr|
+        bldr.assign_call("response", "@http.post") do |asgn|
           asgn.line "\"/path\","
           asgn.line "body: x,"
-        }
-      }.to_s.should eq(
+        end
+      end.to_s.should eq(
         "def post\n  response = @http.post(\n    \"/path\",\n    body: x,\n  )\nend\n"
       )
     end
@@ -435,7 +435,7 @@ describe Crystina do
       result = C.build do
         mod("Petstore") do
           klass("Client") do
-            def_method("initialize") { line %{@base_url = "http://localhost"} }
+            def_method("initialize") { line %(@base_url = "http://localhost") }
           end
         end
       end.to_s
