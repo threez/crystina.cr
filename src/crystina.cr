@@ -18,7 +18,7 @@ require "./crystina/assignment_builder"
 # Crystina — Crystal source-code builder DSL.
 # Entry point: `Crystina.build`.
 module Crystina
-  VERSION  = "1.0.0"
+  VERSION  = "1.0.1"
   MAX_LINE = 80
 
   # Returns a fresh `Builder` for method chaining without a block.
